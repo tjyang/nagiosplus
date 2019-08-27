@@ -128,7 +128,7 @@ localsrc-rpm:
 	@rm -rf rpmbuild && mkdir -p ./rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 	@cp  ../nagios-@VERSION@.tar.gz rpmbuild/SOURCES/nagios-@VERSION@.tar.gz
 	@cp epel-patches/* ./rpmbuild/SOURCES
-	@rpmbuild -ba --define "_topdir ${PWD}/rpmbuild"   epel-nagios.spec
+	@rpmbuild -ba --define "_topdir ${PWD}/rpmbuild"   nagiosplus.spec
 	@cp  rpmbuild/RPMS/$(RPM_ARCH)/*.rpm .
 	@cp rpmbuild/SRPMS/*.src.rpm .
 	@ls -l *.rpm
@@ -140,8 +140,8 @@ rpm: init-epelrpm  build-epelrpm
 init-epelrpm: 
 	# build the rpm using rpmbuild from ./rmbuild as topdir
 	@rm -rf ./rpmbuild && mkdir -p ./rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
-	@spectool -C ./rpmbuild/SOURCES -g epel-nagios.spec
+	@spectool -C ./rpmbuild/SOURCES -g nagiosplus.spec
 	@cp epel-patches/* ./rpmbuild/SOURCES
 build-epelrpm:
-	@rpmbuild -ba --define "_topdir ${PWD}/rpmbuild"  epel-nagios.spec
+	@rpmbuild -ba --define "_topdir ${PWD}/rpmbuild"  nagiosplus.spec
 endif
