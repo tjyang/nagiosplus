@@ -1,0 +1,56 @@
+#!/usr/bin/perl -w
+
+my ${exec_prefix};
+my ${prefix};
+my ${datarootdir};
+
+${prefix}="/usr/local/nagios";
+${exec_prefix}="/usr/local/nagios";
+${datarootdir}="/usr/local/nagios/share";
+
+while ($f = shift @ARGV) {
+
+	if (-x "/bin/mktemp") { 
+		$TEMP = `/bin/mktemp $f.$$.XXXXXX`;
+		die 'Cannot make temporary file $TEMP' if($?);
+		chomp $TEMP;
+	} else {
+		$XXXXXX = rand;
+		$TEMP = "$f.$$.$XXXXXX";
+	}
+
+	open(IN,"<$f.in");
+	open(OUT,">$TEMP") || die 'Cannot make temporary file $TEMP';
+
+	while (<IN>) {
+		s|\@nagios_user\@|nagios|g;
+		s|\@nagios_grp\@|nagios|g;
+		s|\@subsyslockfile\@|/run/nagios.lock|g;
+		s|\@libexecdir\@|/usr/local/nagios/libexec|g; # put all --with-vars before directories
+		s|\@localstatedir\@|/usr/local/nagios/var|g;
+		s|\@sysconfdir\@|/usr/local/nagios/etc|g;
+		s|\@TMPDIR\@|/tmp|g;
+		s|\@CHECKRESULTDIR\@|/usr/local/nagios/var/spool/checkresults|g;
+		s|\@datadir\@|/usr/local/nagios/share|g;
+		s|\@datarootdir\@|/usr/local/nagios/share|g;
+		s|\@sbindir\@|/usr/local/nagios/sbin|g;
+		s|\@bindir\@|/usr/local/nagios/bin|g;
+		s|\@htmurl\@|/nagios|g;
+		s|\@cgiurl\@|/nagios/cgi-bin|g;
+		s|\@MAIL_PROG\@|/usr/bin/mail|g;
+		s|\@VERSION\@|4.4.5|g;
+		s|\$\{exec_prefix\}|/usr/local/nagios|g; # must be next to last
+		s|\$\{prefix\}|/usr/local/nagios|g; # must be last
+		print OUT $_;
+	}
+
+	close IN;
+	close OUT;
+
+	if ((! -e $f) || (`diff $f $TEMP`)) {
+		`mv $TEMP $f`;
+	} else {
+	         unlink $TEMP;
+	}
+
+}
