@@ -1,8 +1,6 @@
 Nagios Plus
 ==========
 
-[![Build Status](https://travis-ci.org/NagiosEnterprises/nagioscore.svg?branch=master)](https://travis-ci.org/NagiosEnterprises/nagioscore)
-
 [![Copr build status](https://copr.fedorainfracloud.org/coprs/tjyang/nagiosplus/package/nagiosplus/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/tjyang/nagiosplus/package/nagiosplus/)
 
 
