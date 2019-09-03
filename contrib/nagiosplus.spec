@@ -9,7 +9,7 @@ Requires:       httpd
 Requires:       php
 Requires:       pynag
 Requires:       check-mk-livestatus
-Requires:       pnp4nagios
+#Requires:       pnp4nagios
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %description
 Empty PHP RPM
